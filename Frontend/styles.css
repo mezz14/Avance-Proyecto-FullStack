@@ -1,46 +1,157 @@
+/* ===== RESET BÁSICO ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===== BODY ===== */
 body {
-    font-family: Arial, sans-serif;
+    font-family: "Segoe UI", Tahoma, sans-serif;
     background: linear-gradient(120deg, #f6d365, #fda085);
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+/* ===== LOGIN ===== */
 .login-container {
     background: white;
     padding: 30px;
-    width: 300px;
-    border-radius: 10px;
+    width: 320px;
+    border-radius: 14px;
     text-align: center;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+    animation: fadeIn 0.6s ease;
 }
 
 .login-container h1 {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+}
+
+.login-container p {
+    margin-bottom: 20px;
+    color: #555;
 }
 
 .login-container input {
     width: 100%;
-    padding: 10px;
+    padding: 12px;
     margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    outline: none;
 }
 
-.login-container button {
-    width: 100%;
-    padding: 10px;
+.login-container input:focus {
+    border-color: #ff7a18;
+}
+
+/* ===== BOTONES ===== */
+button {
+    padding: 12px;
     background: #ff7a18;
     color: white;
     border: none;
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: transform 0.1s ease, background 0.2s ease;
 }
 
-.login-container button:hover {
+button:hover {
     background: #e86c00;
+    transform: scale(1.03);
 }
 
-#mensaje {
+button:active {
+    transform: scale(0.97);
+}
+
+/* ===== MENSAJES ===== */
+#mensaje,
+#error {
     margin-top: 10px;
-    color: red;
+    font-size: 0.9em;
+}
+
+/* ===== TAREAS ===== */
+h1 {
+    margin-bottom: 20px;
+}
+
+#tareaInput {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    width: 220px;
+    margin-right: 5px;
+}
+
+#agregarBtn {
+    margin-left: 5px;
+}
+
+/* CONTENEDOR TAREAS */
+body:has(#listaTareas) {
+    flex-direction: column;
+}
+
+/* LISTA */
+#listaTareas {
+    list-style: none;
+    margin-top: 20px;
+    width: 320px;
+}
+
+#listaTareas li {
+    background: white;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: slideUp 0.3s ease;
+}
+
+#listaTareas button {
+    padding: 6px 10px;
+    font-size: 0.8em;
+    margin-left: 5px;
+}
+
+/* LOGOUT */
+#logout {
+    margin-top: 15px;
+    background: #444;
+}
+
+#logout:hover {
+    background: #222;
+}
+
+/* ===== ANIMACIONES ===== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

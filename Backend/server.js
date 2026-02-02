@@ -13,7 +13,6 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-
 app.get("/", (req, res) => {
     res.send("Servidor vivo 🫀");
 });
@@ -25,6 +24,10 @@ const tareasRoutes = require("./routes/tareas");
 app.use("/api/auth", authRoutes);
 app.use("/api/tareas", tareasRoutes);
 
+// ===== ERROR HANDLER (SIEMPRE AL FINAL) =====
+const errorHandler = require("./middleware/errorHandler");
+app.use(errorHandler);
+
 // ===== DATABASE =====
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log("MongoDB conectado"))
@@ -33,7 +36,4 @@ mongoose.connect(process.env.MONGO_URI)
 // ===== SERVER =====
 app.listen(PORT, () => {
     console.log(`Servidor corriendo en puerto ${PORT}`);
-const errorHandler = require("./middleware/errorHandler");
-app.use(errorHandler);
-
 });
