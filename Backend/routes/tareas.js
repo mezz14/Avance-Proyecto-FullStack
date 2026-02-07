@@ -1,24 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const fs = require("fs").promises;
-const path = require("path");
-
-const filePath = path.join(__dirname, "../data/tareas.json");
-
-// helpers
-const leerTareas = async () => {
-    const data = await fs.readFile(filePath, "utf-8");
-    return JSON.parse(data);
-};
-
-const guardarTareas = async (tareas) => {
-    await fs.writeFile(filePath, JSON.stringify(tareas, null, 2));
-};
+const Tarea = require("../models/Tarea");
 
 // GET /api/tareas
 router.get("/", async (req, res, next) => {
     try {
-        const tareas = await leerTareas();
+        const tareas = await Tarea.find();
         res.json(tareas);
     } catch (error) {
         next(error);
@@ -34,14 +21,8 @@ router.post("/", async (req, res, next) => {
             return res.status(400).json({ message: "El nombre es obligatorio" });
         }
 
-        const tareas = await leerTareas();
-        const nuevaTarea = {
-            id: Date.now(),
-            nombre
-        };
-
-        tareas.push(nuevaTarea);
-        await guardarTareas(tareas);
+        const nuevaTarea = new Tarea({ nombre });
+        await nuevaTarea.save();
 
         res.status(201).json(nuevaTarea);
     } catch (error) {
@@ -52,17 +33,17 @@ router.post("/", async (req, res, next) => {
 // PUT /api/tareas/:id
 router.put("/:id", async (req, res, next) => {
     try {
-        const tareas = await leerTareas();
-        const index = tareas.findIndex(t => t.id == req.params.id);
+        const tarea = await Tarea.findByIdAndUpdate(
+            req.params.id,
+            { nombre: req.body.nombre },
+            { new: true }
+        );
 
-        if (index === -1) {
+        if (!tarea) {
             return res.status(404).json({ message: "Tarea no encontrada" });
         }
 
-        tareas[index].nombre = req.body.nombre || tareas[index].nombre;
-        await guardarTareas(tareas);
-
-        res.json(tareas[index]);
+        res.json(tarea);
     } catch (error) {
         next(error);
     }
@@ -71,11 +52,13 @@ router.put("/:id", async (req, res, next) => {
 // DELETE /api/tareas/:id
 router.delete("/:id", async (req, res, next) => {
     try {
-        const tareas = await leerTareas();
-        const nuevasTareas = tareas.filter(t => t.id != req.params.id);
+        const tarea = await Tarea.findByIdAndDelete(req.params.id);
 
-        await guardarTareas(nuevasTareas);
-        res.json({ message: "Tarea eliminada" });
+        if (!tarea) {
+            return res.status(404).json({ message: "Tarea no encontrada" });
+        }
+
+        res.json({ message: "Tarea eliminada 🗑️" });
     } catch (error) {
         next(error);
     }

@@ -80,7 +80,7 @@ async function render() {
         btnEditar.addEventListener("click", async () => {
             const nuevo = prompt("Editar tarea:", tarea.nombre);
             if (nuevo && nuevo.trim() !== "") {
-                await gestor.editar(tarea.id, nuevo.trim());
+                await gestor.editar(tarea._id, nuevo.trim());
                 render();
             }
         });
@@ -88,7 +88,7 @@ async function render() {
         const btnEliminar = document.createElement("button");
         btnEliminar.textContent = "Eliminar";
         btnEliminar.addEventListener("click", async () => {
-            await gestor.eliminar(tarea.id);
+            await gestor.eliminar(tarea._id);
             render();
         });
 

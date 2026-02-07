@@ -1,157 +1,240 @@
-/* ===== RESET BÁSICO ===== */
+/* ===== RESET ===== */
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* ===== BODY ===== */
+/* ===== BODY / FONDO AERO ===== */
 body {
-    font-family: "Segoe UI", Tahoma, sans-serif;
-    background: linear-gradient(120deg, #f6d365, #fda085);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background:
+    radial-gradient(circle at top left, #ffffff, transparent 40%),
+    linear-gradient(135deg, #cfeeea, #d6f2ff, #e6f7e9);
+
+  color: #1f3b3a;
+}
+
+/* ===== EFECTO VIDRIO GLOBAL ===== */
+.login-container,
+#listaTareas li {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(14px) saturate(120%);
+  -webkit-backdrop-filter: blur(14px) saturate(120%);
+  border: 1px solid rgba(255,255,255,0.45);
 }
 
 /* ===== LOGIN ===== */
 .login-container {
-    background: white;
-    padding: 30px;
-    width: 320px;
-    border-radius: 14px;
-    text-align: center;
-    box-shadow: 0 15px 30px rgba(0,0,0,0.25);
-    animation: fadeIn 0.6s ease;
+  width: 340px;
+  padding: 32px;
+  border-radius: 18px;
+  text-align: center;
+
+  box-shadow:
+    0 12px 25px rgba(80, 200, 180, 0.25),
+    inset 0 1px 1px rgba(255,255,255,0.6);
+
+  animation: fadeIn 0.7s ease;
 }
 
 .login-container h1 {
-    margin-bottom: 5px;
+  font-weight: 600;
+  margin-bottom: 6px;
 }
 
 .login-container p {
-    margin-bottom: 20px;
-    color: #555;
+  margin-bottom: 22px;
+  color: #4a6f6c;
 }
 
-.login-container input {
-    width: 100%;
-    padding: 12px;
-    margin: 8px 0;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    outline: none;
+/* ===== INPUTS ===== */
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+  border-radius: 12px;
+  border: 1px solid rgba(120, 200, 190, 0.6);
+  background: rgba(255,255,255,0.85);
+  outline: none;
+  font-size: 0.95em;
 }
 
-.login-container input:focus {
-    border-color: #ff7a18;
+input:focus {
+  border-color: #6fd6c5;
+  box-shadow: 0 0 8px rgba(120, 220, 210, 0.5);
 }
 
 /* ===== BOTONES ===== */
 button {
-    padding: 12px;
-    background: #ff7a18;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 8px;
-    font-weight: bold;
-    transition: transform 0.1s ease, background 0.2s ease;
+  padding: 12px;
+  margin-top: 10px;
+  background: linear-gradient(135deg, #7fe1d1, #6ccad9);
+  color: #0f3d3a;
+  border: none;
+  cursor: pointer;
+  border-radius: 14px;
+  font-weight: 600;
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow:
+    0 6px 16px rgba(80, 200, 180, 0.35);
 }
 
 button:hover {
-    background: #e86c00;
-    transform: scale(1.03);
+  transform: translateY(-1px);
+  box-shadow:
+    0 0 14px rgba(120, 230, 210, 0.6),
+    0 8px 20px rgba(80, 200, 180, 0.4);
 }
 
 button:active {
-    transform: scale(0.97);
+  transform: scale(0.97);
 }
 
 /* ===== MENSAJES ===== */
 #mensaje,
 #error {
-    margin-top: 10px;
-    font-size: 0.9em;
+  margin-top: 12px;
+  font-size: 0.9em;
+  color: #1f6f6a;
 }
 
-/* ===== TAREAS ===== */
+/* ===== VISTA PRODUCTOS ===== */
+body:has(#listaTareas) {
+  flex-direction: column;
+  padding-top: 40px;
+}
+
 h1 {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
+/* INPUT PRODUCTOS */
 #tareaInput {
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    width: 220px;
-    margin-right: 5px;
+  width: 220px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(120, 200, 190, 0.6);
+  background: rgba(255,255,255,0.85);
 }
 
 #agregarBtn {
-    margin-left: 5px;
+  margin-left: 8px;
 }
 
-/* CONTENEDOR TAREAS */
-body:has(#listaTareas) {
-    flex-direction: column;
-}
-
-/* LISTA */
+/* ===== LISTA ===== */
 #listaTareas {
-    list-style: none;
-    margin-top: 20px;
-    width: 320px;
+  list-style: none;
+  margin-top: 25px;
+  width: 340px;
 }
 
 #listaTareas li {
-    background: white;
-    padding: 12px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-    box-shadow: 0 5px 10px rgba(0,0,0,0.15);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    animation: slideUp 0.3s ease;
+  padding: 14px;
+  border-radius: 16px;
+  margin-bottom: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  box-shadow:
+    0 6px 14px rgba(80, 200, 180, 0.25);
+
+  animation: slideUp 0.35s ease;
 }
 
+/* BOTONES EN LISTA */
 #listaTareas button {
-    padding: 6px 10px;
-    font-size: 0.8em;
-    margin-left: 5px;
+  padding: 6px 12px;
+  font-size: 0.8em;
+  border-radius: 10px;
 }
 
-/* LOGOUT */
+/* ===== LOGOUT ===== */
 #logout {
-    margin-top: 15px;
-    background: #444;
+  margin-top: 20px;
+  background: linear-gradient(135deg, #9fb3b1, #7f9fa0);
+  color: #163534;
 }
 
 #logout:hover {
-    background: #222;
+  box-shadow:
+    0 0 12px rgba(160, 200, 195, 0.5);
+}
+
+/* ===== BURBUJAS DECORATIVAS ===== */
+.bubbles {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.bubbles span {
+  position: absolute;
+  bottom: -120px;
+  width: 140px;
+  height: 140px;
+  background: radial-gradient(
+    circle at top left,
+    rgba(255,255,255,0.95),
+    rgba(120, 220, 200, 0.35)
+  );
+  border-radius: 50%;
+  animation: float 20s infinite ease-in-out;
+  opacity: 0.6;
+}
+
+.bubbles span:nth-child(1) {
+  left: 12%;
+  animation-duration: 24s;
+}
+
+.bubbles span:nth-child(2) {
+  left: 48%;
+  width: 200px;
+  height: 200px;
+  animation-duration: 28s;
+}
+
+.bubbles span:nth-child(3) {
+  left: 78%;
+  animation-duration: 22s;
 }
 
 /* ===== ANIMACIONES ===== */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  from {
+    transform: translateY(0) scale(1);
+  }
+  to {
+    transform: translateY(-120vh) scale(1.25);
+  }
 }

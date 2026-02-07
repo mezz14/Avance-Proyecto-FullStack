@@ -30,7 +30,7 @@ app.use(errorHandler);
 
 // ===== DATABASE =====
 mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log("MongoDB conectado"))
+    .then(() => console.log("MongoDB conectado 🍃"))
     .catch(err => console.log(err));
 
 // ===== SERVER =====
