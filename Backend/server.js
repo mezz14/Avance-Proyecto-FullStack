@@ -1,39 +1,46 @@
-// ===== CONFIG =====
+const express = require("express");
+const cors = require("cors");
+const mongoose = require("mongoose");
 require("dotenv").config();
 
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-
-// ===== APP =====
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-// ===== MIDDLEWARE =====
-app.use(cors());
-app.use(express.json());
-
-app.get("/", (req, res) => {
-    res.send("Servidor vivo 🫀");
-});
-
-// ===== ROUTES =====
 const authRoutes = require("./routes/auth");
 const tareasRoutes = require("./routes/tareas");
 
+const app = express();
+
+// =========================
+// MIDDLEWARES
+// =========================
+app.use(cors());
+app.use(express.json());
+
+// =========================
+// RUTAS
+// =========================
 app.use("/api/auth", authRoutes);
 app.use("/api/tareas", tareasRoutes);
 
-// ===== ERROR HANDLER (SIEMPRE AL FINAL) =====
-const errorHandler = require("./middleware/errorHandler");
-app.use(errorHandler);
-
-// ===== DATABASE =====
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => console.log("MongoDB conectado 🍃"))
-    .catch(err => console.log(err));
-
-// ===== SERVER =====
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en puerto ${PORT}`);
+// prueba
+app.get("/", (req, res) => {
+    res.send("api funcionando");
 });
+
+// =========================
+// SERVER + DB (SOLO SI NO ES TEST)
+// =========================
+if (process.env.NODE_ENV !== "test") {
+    mongoose
+        .connect(process.env.MONGO_URI)
+        .then(() => {
+            console.log("MongoDB conectada 🍃🔥");
+
+            const PORT = 3000;
+            app.listen(PORT, () => {
+                console.log(`Servidor corriendo en http://localhost:${PORT}`);
+            });
+        })
+        .catch(err => console.error("Error MongoDB 💀", err));
+}
+
+// 👇 ESTO ES CLAVE PARA JEST
+module.exports = app;
