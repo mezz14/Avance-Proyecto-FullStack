@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const Tarea = require("../models/Tarea");
 
+const auth = require("../middleware/auth");
+const authorizeRole = require("../middleware/roles");
+const validateTarea = require("../middleware/validate");
+
 // =========================
 // MOCK PARA TEST
 // =========================
@@ -14,44 +18,57 @@ if (process.env.NODE_ENV === "test") {
     });
 
     module.exports = router;
-    // 👈 OJO: NO return
-    // simplemente exportamos y listo
+
 } else {
 
     // =========================
     // RUTAS REALES (PROD / DEV)
     // =========================
 
-    // GET /api/tareas
-    router.get("/", async (req, res, next) => {
+    // ✅ GET con PAGINACIÓN
+    // /api/tareas?page=1&limit=5
+    router.get("/", auth, async (req, res, next) => {
         try {
-            const tareas = await Tarea.find();
-            res.json(tareas);
+            const page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 5;
+
+            const skip = (page - 1) * limit;
+
+            const total = await Tarea.countDocuments();
+
+            const tareas = await Tarea.find()
+                .skip(skip)
+                .limit(limit);
+
+            res.json({
+                total,
+                page,
+                totalPages: Math.ceil(total / limit),
+                data: tareas
+            });
+
         } catch (error) {
             next(error);
         }
     });
 
-    // POST /api/tareas
-    router.post("/", async (req, res, next) => {
+    // ✅ POST
+    router.post("/", auth, validateTarea, async (req, res, next) => {
         try {
-            const { nombre } = req.body;
+            const nuevaTarea = new Tarea({
+                nombre: req.body.nombre
+            });
 
-            if (!nombre) {
-                return res.status(400).json({ message: "El nombre es obligatorio" });
-            }
-
-            const nuevaTarea = new Tarea({ nombre });
             await nuevaTarea.save();
-
             res.status(201).json(nuevaTarea);
+
         } catch (error) {
             next(error);
         }
     });
 
-    // PUT /api/tareas/:id
-    router.put("/:id", async (req, res, next) => {
+    // ✅ PUT
+    router.put("/:id", auth, validateTarea, async (req, res, next) => {
         try {
             const tarea = await Tarea.findByIdAndUpdate(
                 req.params.id,
@@ -64,13 +81,14 @@ if (process.env.NODE_ENV === "test") {
             }
 
             res.json(tarea);
+
         } catch (error) {
             next(error);
         }
     });
 
-    // DELETE /api/tareas/:id
-    router.delete("/:id", async (req, res, next) => {
+    // ✅ DELETE SOLO ADMIN
+    router.delete("/:id", auth, authorizeRole("admin"), async (req, res, next) => {
         try {
             const tarea = await Tarea.findByIdAndDelete(req.params.id);
 
@@ -79,6 +97,7 @@ if (process.env.NODE_ENV === "test") {
             }
 
             res.json({ message: "Tarea eliminada 🗑️" });
+
         } catch (error) {
             next(error);
         }

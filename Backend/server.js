@@ -1,6 +1,8 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const externalProductsRoutes = require("./routes/externalProducts");
+
 require("dotenv").config();
 
 const authRoutes = require("./routes/auth");
@@ -19,6 +21,8 @@ app.use(express.json());
 // =========================
 app.use("/api/auth", authRoutes);
 app.use("/api/tareas", tareasRoutes);
+app.use("/api/external-products", externalProductsRoutes);
+
 
 // prueba
 app.get("/", (req, res) => {

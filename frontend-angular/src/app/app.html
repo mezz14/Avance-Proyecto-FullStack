@@ -1,0 +1,77 @@
+<div class="bubbles">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+<!-- LOGIN -->
+<div class="login-container" *ngIf="!token">
+
+  <h1>Inventario de productos</h1>
+  <p>Acceso al Inventario</p>
+
+  <input [(ngModel)]="email" placeholder="Email">
+  <input [(ngModel)]="password" type="password" placeholder="Contraseña">
+
+  <button type="button" (click)="login()">Iniciar sesión</button>
+
+  <p id="mensaje">{{mensaje}}</p>
+
+</div>
+
+<!-- PRODUCTOS -->
+<div *ngIf="token">
+
+  <h1>🛒 Productos</h1>
+
+  <!-- ADMIN Y USER PUEDEN AGREGAR -->
+  <div *ngIf="role === 'admin' || role === 'user'">
+    <input #productoInput placeholder="Nuevo producto">
+    <button type="button" (click)="agregar(productoInput.value)">
+      Agregar
+    </button>
+  </div>
+
+  <p id="error">{{error}}</p>
+
+  <button type="button" id="logout" (click)="logout()">
+    Cerrar sesión
+  </button>
+
+  <ul>
+    <li *ngFor="let tarea of tareas">
+
+      <!-- MODO NORMAL -->
+      <span *ngIf="editandoId !== tarea._id">
+        {{tarea.nombre}}
+
+        <!-- EDITAR: admin y user -->
+        <button type="button" *ngIf="role === 'admin' || role === 'user'"
+                (click)="iniciarEdicion(tarea)">
+          Editar
+        </button>
+
+        <!-- ELIMINAR: solo admin -->
+        <button type="button" *ngIf="role === 'admin'"
+                (click)="eliminar(tarea._id)">
+          Eliminar
+        </button>
+      </span>
+
+      <!-- MODO EDICION -->
+      <span *ngIf="editandoId === tarea._id">
+        <input [(ngModel)]="nombreEditado">
+
+        <button type="button" (click)="guardarEdicion(tarea._id)">
+          Guardar
+        </button>
+
+        <button type="button" (click)="cancelarEdicion()">
+          Cancelar
+        </button>
+      </span>
+
+    </li>
+  </ul>
+
+</div>
